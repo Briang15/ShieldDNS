@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ShieldDNS
 
 System-wide ad and tracker blocker for Windows and Android.
@@ -40,3 +41,6 @@ Every ad makes a DNS request first. ShieldDNS intercepts that and returns nothin
 - [ ] Phase 3 - Android VPN-based blocker
 - [ ] Phase 4 - GUI polish
 - [ ] Phase 5 - Whitelist + per-category blocking
+=======
+# ShieldDNS
+>>>>>>> 4be09ddfdc87a19155ace88c95c33ab1dc870c99

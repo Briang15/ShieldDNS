@@ -1,7 +1,7 @@
 import os, datetime
 
-HOSTS_PATH = '/home/claude/shielddns/windows/test_hosts.txt'
-BLOCKLIST_PATH = '/home/claude/shielddns/core/blocklists/blocked_domains.txt'
+HOSTS_PATH = 'C:/Windows/System32/drivers/etc/hosts'
+BLOCKLIST_PATH = 'core/blocklists/blocked_domains.txt'
 MARKER_START = '# === ShieldDNS START ==='
 MARKER_END   = '# === ShieldDNS END ==='
 
@@ -64,3 +64,6 @@ print('Blocked after disable:', count_blocked())
 print('Enabled:', is_enabled())
 print()
 print('ALL TESTS PASSED')
+
+
+

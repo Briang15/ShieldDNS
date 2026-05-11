@@ -30,6 +30,7 @@ def is_enabled():
     return MARKER_START in read_hosts()
 
 def enable_blocking(domains):
+    original = strip_shield_block(read_hosts())
     lines = ['', MARKER_START, '# ShieldDNS ' + str(datetime.date.today()), '# ' + str(len(domains)) + ' domains blocked']
     for d in sorted(domains):
         lines.append('0.0.0.0 ' + d)
@@ -46,24 +47,24 @@ def count_blocked():
     if MARKER_START not in text: return 0
     return sum(1 for l in text.splitlines() if l.startswith('0.0.0.0 '))
 
-domains = load_blocklist()
-print('Loaded', len(domains), 'domains')
-print('Currently enabled:', is_enabled())
-print()
-print('Enabling...')
-enable_blocking(domains)
-print('Blocked:', count_blocked(), 'domains')
-print()
-print('First 8 lines of hosts file:')
-for l in read_hosts().splitlines()[:8]:
-    print(' ', l)
-print()
-print('Disabling...')
-disable_blocking()
-print('Blocked after disable:', count_blocked())
-print('Enabled:', is_enabled())
-print()
-print('ALL TESTS PASSED')
+if __name__ == '__main__':
+    print('ShieldDNS')
+    print('Status:', 'ENABLED' if is_enabled() else 'DISABLED')
+    print()
 
-
-
+    if is_enabled():
+        print('Blocking is ON. Type "off" to disable, or Enter to exit.')
+        choice = input('> ').strip().lower()
+        if choice == 'off':
+            disable_blocking()
+            print('Blocking disabled.')
+    else:
+        domains = load_blocklist()
+        print(str(len(domains)) + ' domains loaded.')
+        print('Type "on" to enable blocking, or Enter to exit.')
+        choice = input('> ').strip().lower()
+        if choice == 'on':
+            print('Enabling...')
+            enable_blocking(domains)
+            print('Done. ' + str(count_blocked()) + ' domains now blocked.')
+            print('Restart your browser for changes to take effect.')

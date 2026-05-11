@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1e1e2e;
+      color: #cdd6f4;
+      height: 500px;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Custom title bar */
+    .titlebar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: #181825;
+      -webkit-app-region: drag;
+    }
+    .titlebar-title {
+      font-size: 12px;
+      color: #6c7086;
+      font-weight: 500;
+    }
+    .titlebar-controls {
+      display: flex;
+      gap: 8px;
+      -webkit-app-region: no-drag;
+    }
+    .titlebar-btn {
+      width: 12px; height: 12px;
+      border-radius: 50%; border: none;
+      cursor: pointer; font-size: 0;
+    }
+    .btn-close    { background: #f38ba8; }
+    .btn-minimize { background: #f9e2af; }
+    .btn-close:hover    { background: #eb6f92; }
+    .btn-minimize:hover { background: #e0c080; }
+
+    /* Main content */
+    .content {
+      padding: 40px 48px;
+    }
+
+    /* Screen management */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* Welcome screen */
+    .logo {
+      font-size: 36px;
+      font-weight: 800;
+      color: #cdd6f4;
+      margin-bottom: 8px;
+    }
+    .logo span { color: #a6e3a1; }
+
+    .tagline {
+      font-size: 14px;
+      color: #6c7086;
+      margin-bottom: 32px;
+    }
+
+    .features {
+      margin-bottom: 36px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .feature-icon {
+      width: 32px; height: 32px;
+      background: #313244;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .feature-text strong {
+      display: block;
+      font-size: 13px;
+      color: #cdd6f4;
+      margin-bottom: 2px;
+    }
+    .feature-text span {
+      font-size: 11px;
+      color: #6c7086;
+    }
+
+    /* Install screen */
+    .install-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .install-sub {
+      font-size: 13px;
+      color: #6c7086;
+      margin-bottom: 32px;
+    }
+
+    .progress-bar-wrap {
+      background: #313244;
+      border-radius: 99px;
+      height: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #a6e3a1, #89dceb);
+      border-radius: 99px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    .progress-label {
+      font-size: 12px;
+      color: #6c7086;
+      margin-bottom: 24px;
+      min-height: 18px;
+    }
+    .log-box {
+      background: #181825;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 11px;
+      color: #6c7086;
+      font-family: 'Cascadia Code', 'Consolas', monospace;
+      height: 120px;
+      overflow-y: auto;
+      line-height: 1.8;
+    }
+    .log-box .ok   { color: #a6e3a1; }
+    .log-box .warn { color: #f9e2af; }
+
+    /* Done screen */
+    .done-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .done-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .done-sub {
+      font-size: 13px;
+      color: #6c7086;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .next-steps {
+      background: #181825;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 28px;
+    }
+    .next-steps p {
+      font-size: 12px;
+      color: #6c7086;
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    .next-steps p strong { color: #cdd6f4; }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 28px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: #a6e3a1; color: #1e1e2e; }
+    .btn-secondary { background: #313244; color: #cdd6f4; margin-right: 10px; }
+    .btn-row { display: flex; justify-content: flex-end; }
+  </style>
+</head>
+<body>
+
+  <!-- Title Bar -->
+  <div class="titlebar">
+    <span class="titlebar-title">ShieldDNS Setup</span>
+    <div class="titlebar-controls">
+      <button class="titlebar-btn btn-minimize" onclick="minimize()"></button>
+      <button class="titlebar-btn btn-close" onclick="closeApp()"></button>
+    </div>
+  </div>
+
+  <!-- Welcome Screen -->
+  <div class="content">
+    <div class="screen active" id="screen-welcome">
+      <div class="logo">Shield<span>DNS</span></div>
+      <p class="tagline">System-wide ad & tracker blocker for Windows and Chrome</p>
+
+      <div class="features">
+        <div class="feature-item">
+          <div class="feature-icon">🛡️</div>
+          <div class="feature-text">
+            <strong>256,000+ Domains Blocked</strong>
+            <span>Stops ads before they load — system-wide, every app</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">▶️</div>
+          <div class="feature-text">
+            <strong>YouTube Ad Blocker</strong>
+            <span>Chrome extension removes video ads and overlays</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-text">
+            <strong>Tracker Protection</strong>
+            <span>Blocks analytics, fingerprinting, and ad networks</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="closeApp()">Cancel</button>
+        <button class="btn btn-primary" onclick="showInstall()">Install →</button>
+      </div>
+    </div>
+
+    <!-- Install Screen -->
+    <div class="screen" id="screen-install">
+      <p class="install-title">Installing ShieldDNS</p>
+      <p class="install-sub">This will only take a moment...</p>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <p class="progress-label" id="progress-label">Starting...</p>
+
+      <div class="log-box" id="log-box"></div>
+    </div>
+
+    <!-- Done Screen -->
+    <div class="screen" id="screen-done">
+      <div class="done-icon">✅</div>
+      <p class="done-title">Installation Complete</p>
+      <p class="done-sub">ShieldDNS is installed and ready.</p>
+
+      <div class="next-steps">
+        <p><strong>Step 1:</strong> A ShieldDNS shortcut has been added to your Desktop. Run it as Administrator to enable host blocking.</p>
+        <p><strong>Step 2:</strong> Open Chrome → <strong>chrome://extensions</strong> → Enable Developer Mode → Load Unpacked → select the <strong>extension</strong> folder in your ShieldDNS install directory.</p>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="closeApp()">Finish</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron')
+
+    function closeApp()   { ipcRenderer.send('close-app') }
+    function minimize()   { ipcRenderer.send('minimize-app') }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'))
+      document.getElementById(id).classList.add('active')
+    }
+
+    function showInstall() {
+      showScreen('screen-install')
+      ipcRenderer.send('start-install')
+    }
+
+    function log(msg, type = '') {
+      const box = document.getElementById('log-box')
+      const line = document.createElement('div')
+      line.className = type
+      line.textContent = '> ' + msg
+      box.appendChild(line)
+      box.scrollTop = box.scrollHeight
+    }
+
+    ipcRenderer.on('install-progress', (e, { msg, percent }) => {
+      document.getElementById('progress-fill').style.width = percent + '%'
+      document.getElementById('progress-label').textContent = msg
+      log(msg, percent === 100 ? 'ok' : '')
+    })
+
+    ipcRenderer.on('install-done', () => {
+      setTimeout(() => showScreen('screen-done'), 800)
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "name": "shielddns-installer",
+  "version": "1.0.0",
+  "description": "ShieldDNS Installer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "com.briang15.shielddns",
+    "productName": "ShieldDNS Setup",
+    "win": {
+      "target": "portable",
+      "icon": "icon.png"
+    },
+    "portable": {
+      "artifactName": "ShieldDNS_Setup.exe"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "icon.png"
+    ],
+    "extraFiles": [
+      {
+        "from": "../core",
+        "to": "core",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "../windows",
+        "to": "windows",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "../extension",
+        "to": "extension",
+        "filter": ["**/*"]
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^25.0.0"
+  }
+}

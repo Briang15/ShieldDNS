@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "ShieldDNS",
+  "version": "1.0",
+  "description": "Block ads and trackers everywhere including YouTube.",
+  "permissions": [
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "*://*.youtube.com/*",
+    "*://*.googlevideo.com/*",
+    "*://*.doubleclick.net/*",
+    "*://*.googleadservices.com/*",
+    "*://*.googlesyndication.com/*",
+    "*://*.google-analytics.com/*",
+    "*://*.googletagmanager.com/*",
+    "*://*.adnxs.com/*",
+    "*://*.taboola.com/*",
+    "*://*.outbrain.com/*",
+    "*://*.criteo.com/*",
+    "*://*.rubiconproject.com/*",
+    "*://*.pubmatic.com/*",
+    "*://*.scorecardresearch.com/*",
+    "*://*.amazon-adsystem.com/*",
+    "*://*.moatads.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "block_ads",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  }
+}

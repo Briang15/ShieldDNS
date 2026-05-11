@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 240px;
+      background: #1e1e2e;
+      color: #cdd6f4;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+    }
+    h1 { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+    .sub { font-size: 11px; color: #6c7086; margin-bottom: 20px; }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .toggle-label { font-size: 13px; font-weight: bold; }
+    .toggle-label.on  { color: #a6e3a1; }
+    .toggle-label.off { color: #f38ba8; }
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #f38ba8; border-radius: 24px; transition: 0.3s;
+    }
+    .slider:before {
+      position: absolute; content: "";
+      height: 18px; width: 18px;
+      left: 3px; bottom: 3px;
+      background: white; border-radius: 50%; transition: 0.3s;
+    }
+    input:checked + .slider { background: #a6e3a1; }
+    input:checked + .slider:before { transform: translateX(20px); }
+    .stat { font-size: 11px; color: #6c7086; margin-bottom: 16px; }
+    .stat span { color: #cdd6f4; font-weight: bold; }
+    .divider { border: none; border-top: 1px solid #313244; margin-bottom: 12px; }
+    .feature { font-size: 11px; color: #6c7086; margin-bottom: 6px; }
+    .feature span { color: #a6e3a1; margin-right: 6px; }
+    .feature.disabled span { color: #f38ba8; }
+    .feature.disabled { color: #45475a; }
+  </style>
+</head>
+<body>
+  <h1>ShieldDNS</h1>
+  <p class="sub">Ad & tracker blocker</p>
+
+  <div class="toggle-row">
+    <span class="toggle-label on" id="status-label">Protection Active</span>
+    <label class="switch">
+      <input type="checkbox" id="main-toggle" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <p class="stat">Ads blocked this session: <span id="count">0</span></p>
+
+  <hr class="divider">
+
+  <p class="feature" id="f1"><span>✓</span>YouTube ads</p>
+  <p class="feature" id="f2"><span>✓</span>Banner ads</p>
+  <p class="feature" id="f3"><span>✓</span>Trackers</p>
+  <p class="feature" id="f4"><span>✓</span>Ad networks</p>
+
+  <script src="popup.js"></script>
+</body>
+</html>
